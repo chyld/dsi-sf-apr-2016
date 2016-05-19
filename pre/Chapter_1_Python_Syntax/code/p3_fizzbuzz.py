@@ -10,9 +10,14 @@ def fizzbuzz(num, fizz, buzz):
            "FizzBuzz" if num is dibisible by both fizz and buzz, and
            "" otherwise
     '''
-    pass
-
-
+    if num % (fizz * buzz) == 0:
+        return 'FizzBuzz'
+    elif num % fizz == 0:
+        return 'Fizz'
+    elif num % buzz == 0:
+        return 'Buzz'
+    else:
+        return ''
 
 if __name__ == '__main__':
-    print fizzbuzz(int(sys.argv[1]), 3, 5)
+    print(fizzbuzz(int(sys.argv[1]), 3, 5))
