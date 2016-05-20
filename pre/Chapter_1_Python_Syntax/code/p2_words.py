@@ -1,4 +1,5 @@
 import random, string
+from collections import defaultdict, Counter
 
 def word_counts(f):
     '''
@@ -18,7 +19,14 @@ def word_counts(f):
     ...     word_counts(f)
     {'the': {'dog': 1, 'cat': 1}, 'chased': {'the': 1}, 'cat': {'chased': 1}}
     '''
-    pass
+    dictionary = defaultdict(Counter)
+    words = list(map(lambda word: word.lower().strip(string.punctuation), f.read().split()))
+    length = len(words)
+    for i, word in enumerate(words):
+        if i + 1 < length:
+            post = words[i+1]
+            dictionary[word][post] += 1
+    return dictionary
 
 
 def associated_words(f):
@@ -38,36 +46,18 @@ def associated_words(f):
     >>> d[('among', 'the')]
     ['people', 'party.', 'trees,', 'distant', 'leaves,', 'trees', 'branches,', 'bright']
     '''
-    pass
-
-
-def make_random_story(f, num_words):
-    '''
-    INPUT: file, integer
-    OUTPUT: string
-
-    Call associated_words on file f and use the resulting dictionary to
-    randomly generate text with num_words total words.
-
-    Choose the next word by using random.choice to pick a word from the list
-    of possibilities given the last two words.
-
-    Use join method to turn a list of words into a string.
-
-    Example:
-    (this is randomly generate, so you are unlikely to get the same result)
-    >>> with open('alice.txt') as f:
-    ...     print make_random_story(f, 10)
-    chapter i. down the middle, being held up by two
-    '''
-    pass
+    dictionary = defaultdict(set)
+    words = list(map(lambda word: word.lower().strip(string.punctuation), f.read().split()))
+    length = len(words)
+    for i, w1 in enumerate(words):
+        if i + 2 < length:
+            w2 = words[i+1]
+            w3 = words[i+2]
+            dictionary[(w1, w2)].add(w3)
+    return dictionary
 
 
 if __name__ == '__main__':
-    # This code will be run if you on the command line run: python words.py
-    with open('alice.txt') as f:
-        print make_random_story(f, 100)
-
-
-
-
+    f = open('alice.txt')
+    word_counts(f)
+    associated_words(f)
