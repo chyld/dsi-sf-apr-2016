@@ -1,5 +1,6 @@
 import itertools
 import ipdb
+import functools
 ### Fill in each function below. Each function should be a one-liner.
 
 
@@ -78,7 +79,7 @@ def even_odd1(L):
     >>> even_odd([6, 4, 1, 3, 8, 5])
     ['even', 'even', 'odd', 'odd', 'even', 'odd']
     '''
-    pass
+    return ['odd' if x%2 else 'even' for x in L]
 
 def even_odd2(L):
     '''
@@ -88,7 +89,7 @@ def even_odd2(L):
     Use map to return a list of the same length with the strings
     "even" or "odd" depending on whether the element in L is even or odd.
     '''
-    pass
+    return list(map(lambda x: 'odd' if x%2 else 'even', L))
 
 def shift_on_character(string, char):
     '''
@@ -105,7 +106,9 @@ def shift_on_character(string, char):
     >>> shift_on_character("zipfian", "f")
     'fianzip'
     '''
-    pass
+    for i, c in enumerate(string):
+        if c == char:
+            return string[i:] + string[:i]
 
 def is_palindrome(string):
     '''
@@ -118,7 +121,7 @@ def is_palindrome(string):
     >>> is_palindrome("rats live on no evil star")
     True
     '''
-    pass
+    return string == string[::-1]
 
 def alternate(L):
     '''
@@ -132,7 +135,7 @@ def alternate(L):
     >>> alternate(['a', 'b', 'c', 'd', 'e', 'f', 'g'])
     ['b', 'd', 'f', 'a', 'c', 'e', 'g']
     '''
-    pass
+    return L[0::2] + L[1::2]
 
 def shuffle(L):
     '''
@@ -147,7 +150,9 @@ def shuffle(L):
     >>> shuffle([1, 2, 3, 4, 5, 6])
     [1, 4, 2, 5, 3, 6]
     '''
-    pass
+    half = (len(L) // 2) - 1
+    lst = zip(L[0:half], L[half+1:-1])
+    return [x for tup in lst for x in tup]
 
 def filter_words(word_list, letter):
     '''
@@ -161,7 +166,7 @@ def filter_words(word_list, letter):
                       "beretta", "ike's", "delfina"], "d")
     ['dandelion', 'doc loi', 'delfina']
     '''
-    pass
+    return [word for word in word_list if word[0] == letter]
 
 def factors(num):
     '''
@@ -170,7 +175,7 @@ def factors(num):
 
     Use filter to return all of the factors of num.
     '''
-    pass
+    return [n for n in range(1, num) if num % n == 0]
 
 def acronym(phrase):
     '''
@@ -187,7 +192,7 @@ def acronym(phrase):
     Hint: You can do this on one line using list comprehension and the join
     method. Python has a builtin string method to uppercase strings.
     '''
-    pass
+    return "".join([word.upper()[0] for word in phrase.split()])
 
 def sort_by_ratio(L):
     '''
@@ -204,8 +209,7 @@ def sort_by_ratio(L):
     >>> L
     [(1, 3), (2, 4), (3, 5), (8, 5), (9, 4)]
     '''
-    pass
-
+    return sorted(L, key=lambda tup: tup[0]/tup[1])
 
 def count_match_index(L):
     '''
@@ -219,7 +223,7 @@ def count_match_index(L):
     >>> count_match_index([0, 2, 2, 3, 6, 5])
     4
     '''
-    pass
+    return len([n for i, n in enumerate(L) if i == n])
 
 def only_sorted(L):
     '''
@@ -233,7 +237,7 @@ def only_sorted(L):
     >>> only_sorted([[3, 4, 5], [4, 3, 5], [5, 6, 3], [5, 6, 7]])
     [[3, 4, 5], [5, 6, 7]]
     '''
-    pass
+    return [row for row in L if row == sorted(row)]
 
 def concatenate(L1, L2, connector=""):
     '''
@@ -252,7 +256,7 @@ def concatenate(L1, L2, connector=""):
     ['San Francisco, California', 'New York, New York', 'Las Vegas, Nevada',
     'Los Angeles, California']
     '''
-    pass
+    return [tup[0] + connector + tup[1] for tup in zip(L1, L2)]
 
 def transpose(mat):
     '''
@@ -263,7 +267,7 @@ def transpose(mat):
     empty. You can do this using a double for loop in a list comprehension.
     There is also a solution using zip.
     '''
-    pass
+    return [list(tup) for tup in zip(*mat)]
 
 def invert_list(L):
     '''
@@ -278,7 +282,7 @@ def invert_list(L):
     >>> invert_list(['a', 'b', 'c', 'd'])
     {'a': 0, 'c': 2, 'b': 1, 'd': 3}
     '''
-    pass
+    return {c:i for i, c in enumerate(L)}
 
 def digits_to_num(digits):
     '''
@@ -292,7 +296,7 @@ def digits_to_num(digits):
     >>> digits_to_num([5, 0, 3, 8])
     5038
     '''
-    pass
+    return functools.reduce(lambda total, tup: total + (tup[1] * (10 ** (len(digits) - tup[0] - 1))), enumerate(digits), 0)
 
 def intersection_of_sets(list_of_sets):
     '''
@@ -306,7 +310,7 @@ def intersection_of_sets(list_of_sets):
     >>> intersection_of_sets([{1, 2, 3}, {2, 3, 4}, {2, 5}])
     set([2])
     '''
-    pass
+    return functools.reduce(lambda a, b: a & b, list_of_sets)
 
 def combinations(alphabet, n):
     '''
@@ -320,7 +324,7 @@ def combinations(alphabet, n):
     >>> combinations('abc', 2)
     ['a', 'b', 'c', 'ab', 'ac', 'bc']
     '''
-    pass
+    return ["".join(tup) for i in range(1, n+1) for tup in itertools.combinations(alphabet, i)]
 
 def permutations_in_dict(string, words):
     '''
@@ -334,4 +338,4 @@ def permutations_in_dict(string, words):
     >>> permutations_in_dict('act', {'cat', 'rat', 'dog', 'act'})
     ['act', 'cat']
     '''
-    pass
+    return ["".join(tup) for tup in itertools.permutations(string) if "".join(tup) in words]
